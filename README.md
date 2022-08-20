@@ -73,7 +73,7 @@ to allow the `muttrc` to work.
         mkdir -p ~/.config/mutt
 
 1. Include the [example `muttrc`](examples/muttrc) in your config, changing
-   `imap_user` as necessary
+   `imap_user` and `imap_oauth_refresh_command` as necessary
 
 1. Optional: uncomment the last bits of the example muttrc to standardize folder
    names and mail deletion policies in mutt
