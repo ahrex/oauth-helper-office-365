@@ -22,7 +22,7 @@ Operates in two modes:
 ## Barebones usage
 
 The below example is a smoke test of functionality. In order for the script to
-be useful, you'll want to consume the mission mode token somewhere.
+be useful, you'll want to consume the mission mode JWT somewhere.
 
 ### Generate and save secret
 
