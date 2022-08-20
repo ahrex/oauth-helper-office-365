@@ -62,7 +62,7 @@ be useful, you'll want to consume the mission mode JWT somewhere.
 
 ## Mutt usage
 
-[examples/muttrc](examples/muttrc) should contain enough mutt configuration
+[examples/muttrc](examples/muttrc) should contain enough configuration to
 decrypt a stored token. The below guide will help you encrypt and store a secret
 to allow the `muttrc` to work.
 
