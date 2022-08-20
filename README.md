@@ -11,6 +11,7 @@ Operates in two modes:
 
 # Requirements
 
+* [python 3](https://www.python.org/downloads/)
 * [microsoft authentication library
   (msal)](https://github.com/AzureAD/microsoft-authentication-library-for-python)
   - `pip install msal` if you receive a "missing required module `msal`" error
