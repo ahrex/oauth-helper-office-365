@@ -1,0 +1,51 @@
+# vim: filetype=muttrc:
+
+# Use OAuth with Outlook 365
+# https://www.vanormondt.net/~peter/blog/2021-03-16-mutt-office365-mfa.html#orgb39f967
+
+# store our decryption password into memory on startup
+# https://stackoverflow.com/a/3980713
+#
+# not that much different so far compared to gnupg, in the sense that someone w/ memory
+# access can decrypt
+#
+# clear the screen by sending control codes to stderr
+# https://stackoverflow.com/a/1508589
+set my_decryption_password = "`/bin/sh -c 'stty -echo; printf >&2 "OAuth decryption passphrase: "; read PASS; RET=$?; stty echo; echo "$PASS"; printf >&2 "\33[2K\r"; exit $RET'`"
+# fix vim syntax highlighting with: `
+
+# how we connect to the remote end
+set imap_user = "my_user_login@contoso.com"  # REPLACE ME
+set folder = "imaps://outlook.office365.com/"
+set smtp_url = "smtp://${imap_user}@smtp.office365.com:587/"
+# no OAUTHBEARER for Exchange 365 yet:
+# http://lists.mutt.org/pipermail/mutt-dev/Week-of-Mon-20190401/000291.html
+#
+# empirical evidence shows that sometimes Office 365 is a bit faster if we first try
+# (and fail) OAUTHBEARER for imap
+set imap_authenticators = "OAUTHBEARER:XOAUTH2"
+# there is a risk of leaking the passphrase if these commands take too long to run
+set imap_oauth_refresh_command = "/path/to/oauth-helper-office-365.py --passphrase ${my_decryption_password} ${imap_user} ~/.config/mutt/office-365.token"
+set smtp_authenticators = "XOAUTH2"
+# smtp might fail if your account isn't provisioned for it:
+# https://aka.ms/smtp_auth_disabled
+set smtp_oauth_refresh_command = "${imap_oauth_refresh_command}"
+
+# optional office 365 configuration, uncomment if you like:
+#
+## how we map our folders to the remote end
+#set my_inbox_name = "INBOX"
+#set my_drafts_name = "Drafts"
+#set my_sent_name = "Sent Items"
+#set my_trash_name = "Deleted Items"
+#
+## the = symbol below aliases to $folder
+## http://www.mutt.org/doc/manual/#shortcuts
+#set spoolfile = "=${my_inbox_name}"
+#set postponed = "=${my_drafts_name}"
+#set record = ""  # dedupe: providers automatically add sent emails to this folder
+#set trash = "=${my_trash_name}"
+#
+## server-side will move the message to the trash bin, so we're safe to set `delete` to
+## either `yes` or `ask-yes`; choose `yes` because we can always recover it
+#set delete = yes
